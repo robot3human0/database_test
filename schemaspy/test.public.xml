@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="test" schema="public" type="PostgreSQL - 15.5 (Ubuntu 15.5-0ubuntu0.23.04.1)">
+   <tables>
+      <table name="checks" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5">
+            <child column="check_id" foreignKey="p2p_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="p2p"/>
+            <child column="check_id" foreignKey="verter_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="verter"/>
+            <child column="check_id" foreignKey="xp_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="xp"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="peer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="checks_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="task" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="title" foreignKey="checks_task_fkey" implied="false" onDeleteCascade="false" schema="public" table="tasks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="date" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="checks_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="friends" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="peer1" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="friends_peer1_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="peer2" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="friends_peer2_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="friends_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="p2p" numRows="88" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="check_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="p2p_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="checks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="checkingpeer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="p2p_checkingpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="state" nullable="true" remarks="" size="2147483647" type="status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="time" nullable="true" remarks="" size="15" type="time" typeCode="92"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="p2p_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="peers" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="nickname" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <child column="peer" foreignKey="checks_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="checks"/>
+            <child column="peer1" foreignKey="friends_peer1_fkey" implied="false" onDeleteCascade="false" schema="public" table="friends"/>
+            <child column="peer2" foreignKey="friends_peer2_fkey" implied="false" onDeleteCascade="false" schema="public" table="friends"/>
+            <child column="checkingpeer" foreignKey="p2p_checkingpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="p2p"/>
+            <child column="peer" foreignKey="recommendations_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="recommendations"/>
+            <child column="recommendedpeer" foreignKey="recommendations_recommendedpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="recommendations"/>
+            <child column="peer" foreignKey="timetracking_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="timetracking"/>
+            <child column="checkedpeer" foreignKey="transferredpoints_checkedpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="transferredpoints"/>
+            <child column="checkingpeer" foreignKey="transferredpoints_checkingpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="transferredpoints"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="birthday" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
+         <primaryKey column="nickname" sequenceNumberInPK="1"/>
+         <index name="peers_pkey" unique="true">
+            <column ascending="true" name="nickname"/>
+         </index>
+      </table>
+      <table name="recommendations" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="peer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="recommendations_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="recommendedpeer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="recommendations_recommendedpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="recommendations_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="tasks" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="title" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <child column="task" foreignKey="checks_task_fkey" implied="false" onDeleteCascade="false" schema="public" table="checks"/>
+            <child column="parenttask" foreignKey="tasks_parenttask_fkey" implied="false" onDeleteCascade="false" schema="public" table="tasks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="parenttask" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="title" foreignKey="tasks_parenttask_fkey" implied="false" onDeleteCascade="false" schema="public" table="tasks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="maxxp" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="title" sequenceNumberInPK="1"/>
+         <index name="tasks_pkey" unique="true">
+            <column ascending="true" name="title"/>
+         </index>
+      </table>
+      <table name="timetracking" numRows="52" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="peer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="timetracking_peer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="date" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="time" nullable="true" remarks="" size="15" type="time" typeCode="92"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="state" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="timetracking_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="transferredpoints" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="checkingpeer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="transferredpoints_checkingpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="checkedpeer" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12">
+            <parent column="nickname" foreignKey="transferredpoints_checkedpeer_fkey" implied="false" onDeleteCascade="false" schema="public" table="peers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="pointsamount" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="transferredpoints_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="verter" numRows="68" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="check_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="verter_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="checks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="state" nullable="true" remarks="" size="2147483647" type="status" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="time" nullable="true" remarks="" size="15" type="time" typeCode="92"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="verter_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="xp" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="check_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5">
+            <parent column="id" foreignKey="xp_check_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="checks"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="xpamount" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="xp_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+   <routines>
+      <routine dataAccess="MODIFIES" deterministic="false" name="add_p2p_checks(IN checking_peer character varying, IN checked_peer character varying, IN task_name character varying, IN check_status status, IN check_time time without time zone)" securityType="INVOKER" type="PROCEDURE">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+check_id bigint;
+    today    date := CURRENT_DATE;
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Peers WHERE nickname = checking_peer)
+        OR NOT EXISTS(SELECT 1 FROM Peers WHERE nickname = checked_peer) THEN
+        RAISE EXCEPTION 'Both peers should be registered in the Peers table';
+END IF;
+
+    IF checking_peer = checked_peer THEN
+        RAISE EXCEPTION 'The checking peer cannot check by himself';
+END IF;
+
+    IF check_status = 'Start' THEN
+        INSERT INTO checks (id, peer, task, date)
+        VALUES ((SELECT (max(id) + 1) FROM checks), checked_peer, task_name, today)
+        RETURNING id INTO check_id;
+ELSE
+SELECT p2p.check_id
+INTO check_id
+FROM p2p
+         JOIN checks c on p2p.check_id = c.id
+WHERE checkingpeer = checking_peer
+  AND peer = checked_peer
+  AND task = task_name
+  AND state = 'Start';
+END IF;
+INSERT INTO P2P (id, check_id, checkingPeer, state, time)
+VALUES ((SELECT (max(id) + 1) FROM p2p), check_id, checking_peer, check_status, check_time);
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="checking_peer" type="character varying"/>
+            <parameter mode="IN" name="checked_peer" type="character varying"/>
+            <parameter mode="IN" name="task_name" type="character varying"/>
+            <parameter mode="IN" name="check_status" type="status"/>
+            <parameter mode="IN" name="check_time" type="time without time zone"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="add_points()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+new_id           bigint  := (SELECT coalesce(max(id), 0)
+                                 FROM transferredpoints) + 1;
+    new_ching_peer   varchar := new.checkingpeer;
+    new_chck_peer    varchar := (SELECT peer
+                                 FROM checks
+                                 WHERE id = new.check_id);
+    new_pointsamount integer;
+BEGIN
+    IF new.state = 'Start' THEN
+SELECT pointsamount
+INTO new_pointsamount
+FROM transferredpoints
+WHERE checkingpeer = new_ching_peer
+  AND checkedpeer = new_chck_peer;
+IF new_pointsamount IS NULL THEN
+            INSERT INTO transferredpoints VALUES (new_id, new_ching_peer, new_chck_peer, 1);
+ELSE
+SELECT id
+INTO new_id
+FROM transferredpoints
+WHERE checkingpeer = new_ching_peer AND checkedpeer = new_chck_peer;
+UPDATE transferredpoints SET pointsamount = new_pointsamount + 1 WHERE id = new_id;
+END IF;
+END IF;
+RETURN NULL;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="add_verter_check(IN checking_peer character varying, IN task_name character varying, IN check_status status, IN check_time time without time zone)" securityType="INVOKER" type="PROCEDURE">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+check_id_4_verter bigint;
+BEGIN
+SELECT c.id
+INTO check_id_4_verter
+FROM p2p
+         JOIN checks c on p2p.check_id = c.id
+WHERE state = 'Success'
+  AND c.task = task_name
+  AND checkingpeer = checking_peer
+ORDER BY date DESC, p2p.time DESC LIMIT 1;
+IF check_id_4_verter IS NULL THEN
+        RAISE EXCEPTION 'No successful P2P check found for the specified task and peer';
+ELSE
+        INSERT INTO verter
+        VALUES ((SELECT coalesce(max(id), 0)
+                 FROM verter) + 1, check_id_4_verter, check_status, check_time);
+END IF;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="checking_peer" type="character varying"/>
+            <parameter mode="IN" name="task_name" type="character varying"/>
+            <parameter mode="IN" name="check_status" type="status"/>
+            <parameter mode="IN" name="check_time" type="time without time zone"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="check_before_add()" returnType="trigger" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+max_xp integer := (SELECT maxxp
+                       FROM tasks
+                                JOIN checks c on tasks.title = c.task
+                                JOIN p2p p on c.id = p.check_id
+                       WHERE state = 'Success'
+                         AND check_id = new.check_id);
+BEGIN
+    IF max_xp IS NULL OR new.xpamount > max_xp THEN
+        RETURN NULL;
+ELSE
+        RETURN NEW;
+END IF;
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="early_entry()" returnType="TABLE(month text, earlyentries numeric)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query
+    with peers_birth_to_int as  (select nickname, birthday, to_char(birthday, 'TMMonth') as month_of_birth from peers),
+                 month_of_a_year as (select to_char(dd, 'mm') as id, to_char(moy.dd, 'TMMonth') as month from (select generate_series('2023-01-01'::timestamp, '2023-12-01'::timestamp, '1 month'::interval) dd) moy),
+                 timetracking_till_afternoon as (select count(*), to_char(tg.date, 'TMMonth') as month, tg.peer from timetracking tg where tg.state = 1 and time < '12:00:00' group by 2, 3),
+                 timetracking_month as (select count(*), to_char(tg.date, 'TMMonth') as month, peer from timetracking tg where tg.state = 1 group by 2, 3),
+                 born_that_month as (select distinct moay.id, moay.month, tm.count, pbti.nickname  from peers_birth_to_int pbti
+                                                                                                    left join month_of_a_year moay on pbti.month_of_birth = moay.month
+                                                                                                    left join timetracking_month tm on pbti.month_of_birth = tm.month
+                                                                                                   where pbti.nickname = tm.peer
+                                                                                                   order by moay.id),
+                 born_come_till_twelve as (select distinct moay.id, moay.month, tta.count, pbti.nickname from peers_birth_to_int pbti
+                                                                                                            left join month_of_a_year moay on pbti.month_of_birth = moay.month
+                                                                                                            left join timetracking_till_afternoon tta on pbti.month_of_birth = tta.month
+                                                                                                         where pbti.nickname = tta.peer
+                                                                                                         order by moay.id),
+                 what_a_hell as (select btm.id, btm.month, sum(count) from born_that_month btm where btm.month in (select m1.month from month_of_a_year m1) group by 2, 1 order by btm.id),
+                 dope as (select bctt.id, bctt.month, sum(count) from born_come_till_twelve bctt where bctt.month in (select m2.month from month_of_a_year m2) group by 2, 1 order by bctt.id)
+select moay2.month, round(coalesce((100 / wah.sum * dp.sum), 0), 0) as earlyentries from month_of_a_year moay2 left join dope dp on moay2.id = dp.id left join what_a_hell wah on dp.id = wah.id;
+end;]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="month" type="text"/>
+            <parameter mode="TABLE" name="earlyentries" type="numeric"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="export_data(IN table_name character varying, IN file_path character varying, IN delimiter character)" securityType="INVOKER" type="PROCEDURE">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    file_path_regex text := E'^\/[a-zA-Z0-9_-]+.+\/$';
+BEGIN
+    IF
+            file_path !~ file_path_regex
+    THEN
+        RAISE EXCEPTION 'Invalid data file_path (% doesn''t match %)', file_path, file_path_regex;
+    END IF;
+    EXECUTE '
+				COPY
+					' || quote_ident(table_name) || '
+				TO
+					' || quote_literal(file_path || table_name || '.csv') || '
+                WITH (
+					DELIMITER ' || quote_literal(delimiter) || '
+				,FORMAT CSV, HEADER);
+			';
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="table_name" type="character varying"/>
+            <parameter mode="IN" name="file_path" type="character varying"/>
+            <parameter mode="IN" name="delimiter" type="character"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="frequentlycheckedtask()" returnType="TABLE(day date, task character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with t1 as (select checks.task as t, checks.date as d, count(*) as counts
+                                 from checks
+                                 group by t, d),
+                          t2 as (select t1.t, t1.d, rank() over (partition by t1.d order by t1.counts desc) as rank
+                                 from t1)
+select t2.d, t2.t
+from t2
+where rank = 1;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="day" type="date"/>
+            <parameter mode="TABLE" name="task" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getamountpoints()" returnType="TABLE(peer character varying, pointschange bigint)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query select tableCheckingPeer.checkingpeer                                              as peer,
+                            coalesce(tableCheckingPeer.suming, 0) - coalesce(tableCheckedPeer.sumed, 0) as pointsChange
+                     from (select checkingpeer,
+                                  sum(pointsamount) as suming
+                           from transferredpoints
+                           group by checkingpeer) as tableCheckingPeer
+                              join (select checkedpeer,
+                                           sum(pointsamount) as sumed
+                                    from transferredpoints
+                                    group by checkedpeer) as tableCheckedPeer
+                                   on tableCheckingPeer.checkingpeer = tableCheckedPeer.checkedpeer
+                     order by pointsChange desc;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="pointschange" type="bigint"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getamountpoints2()" returnType="TABLE(peer character varying, pointschange bigint)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with p1 as (select peer1,
+                                        sum(pointsAmount) as pa1
+                                 from gettransferredpoints()
+                                 group by peer1),
+                          p2 as (select peer2,
+                                        sum(pointsAmount) as pa2
+                                 from getTransferredPoints()
+                                 group by peer2)
+select coalesce(p1.peer1, p2.peer2)              as peer,
+       coalesce(p1.pa1, 0) - coalesce(p2.pa2, 0) as pointsChange
+from p1
+         full join p2 on p1.peer1 = p2.peer2
+order by pointsChange desc;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="pointschange" type="bigint"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getlark(t time without time zone, nt bigint)" returnType="TABLE(peer character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with tt as (select tt.peer,
+                                        count(tt.peer) as amount
+                                 from timetracking tt
+                                 where (time < t)
+                                   and state = 1
+                                 group by tt.peer)
+select tt.peer
+from tt
+where amount >= nt;
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="t" type="time without time zone"/>
+            <parameter mode="IN" name="nt" type="bigint"/>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getluckydays(n bigint)" returnType="TABLE(date date)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with t as (select c.date,
+                                       case
+                                           when xp.id is null then null
+                                           when xp.xpamount >= t2.maxxp * 0.8 then true
+                                           else null
+                                           end as t
+                                from checks c
+                                         left join xp on c.id = xp.check_id
+                                         join tasks t2 on c.task = t2.title
+                                group by c.date, xp.id, maxxp)
+select t.date
+from t
+group by t.date
+having count(t.date) >= N
+   and count(t.t) = count(t.date);
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="n" type="bigint"/>
+            <parameter mode="TABLE" name="date" type="date"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getowl(d integer, nt bigint)" returnType="TABLE(peer character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with tt as (select tt.peer,
+                                        count(tt.peer) as amount
+                                 from timetracking tt
+                                 where date > current_date - d
+                                   and state = 2
+                                 group by tt.peer)
+select tt.peer
+from tt
+where amount >= nt;
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="d" type="integer"/>
+            <parameter mode="IN" name="nt" type="bigint"/>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getpeerscompleteblock(needle character varying)" returnType="TABLE(peer character varying, day date)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with lastTaskBlock as (select max(title) as title
+                                            from tasks
+                                            where title similar to needle || '[0-9]%'),
+                          successfulChecks as (select checks.peer,
+                                                      checks.task,
+                                                      checks.date
+                                               from xp
+                                                        join checks on xp.check_id = checks.id)
+select sc.peer,
+       sc.date
+from successfulChecks sc
+         join lastTaskBlock ltb on sc.task = ltb.title;
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="needle" type="character varying"/>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="day" type="date"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getpeershaventleftcampus(giga date)" returnType="TABLE(peer character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query
+select tt.peer
+from timeTracking tt
+where date = giga
+group by 1
+having count(state) < 3
+order by 1;
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="giga" type="date"/>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getpeerssuccessfullycompletethesetwotasks(task1 character varying, task2 character varying, task3 character varying)" returnType="TABLE(peer character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with task1 as (select checks.peer
+                                    from getSuccessedTasks() as checks
+                                    where checks.task like task1),
+                          task2 as (select checks.peer
+                                    from getSuccessedTasks() as checks
+                                    where checks.task like task2),
+                          task3 as (select checks.peer
+                                    from getSuccessedTasks() as checks
+                                    where checks.task not like task3),
+                          result as (select task1.peer
+                                     from task1
+                                     intersect
+                                     select task2.peer
+                                     from task2
+                                     intersect
+                                     select task3.peer
+                                     from task3)
+select result.peer
+from result;
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="task1" type="character varying"/>
+            <parameter mode="IN" name="task2" type="character varying"/>
+            <parameter mode="IN" name="task3" type="character varying"/>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getrecommendedpeers()" returnType="TABLE(peer character varying, recommendedpeer character varying)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with allFriends as (select *
+                                         from (select distinct friends.peer1 as peer,
+                                                               friends.peer2 as friend
+                                               from friends
+                                               union
+                                               select friends.peer2,
+                                                      friends.peer1
+                                               from friends) t),
+                          countRecommended as (select allFriends.peer,
+                                                      count(recommendations.recommendedpeer) as rating,
+                                                      recommendations.recommendedpeer
+                                               from allFriends
+                                                        join recommendations on allFriends.friend = recommendations.peer
+                                               where allFriends.peer != recommendations.recommendedpeer
+                                               group by allFriends.peer, recommendations.recommendedpeer),
+                          findfavorite as (select countRecommended.peer, max(rating) as maxRating
+                                           from countRecommended
+                                           group by countRecommended.peer)
+select countRecommended.peer as Peer, countRecommended.RecommendedPeer
+from countRecommended
+         join findfavorite on countRecommended.peer = findfavorite.peer and
+                              countRecommended.rating = findfavorite.maxRating;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="recommendedpeer" type="character varying"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getstatisticsaboutbegintasks(block1 character varying, block2 character varying)" returnType="TABLE(startedblock1 bigint, startedblock2 bigint, startedbothblocks bigint, didntstartanyblock bigint)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with startedBlock1 as (select distinct peer
+                                            from checks
+                                            where checks.task similar to block1 || '[0-9]%'),
+                          startedBlock2 as (select distinct peer
+                                            from checks
+                                            where checks.task similar to block2 || '[0-9]%'),
+                          startedBothBlocks as (select startedBlock1.peer
+                                                FROM startedBlock1
+                                                intersect
+                                                select startedBlock2.peer
+                                                from startedBlock2),
+                          didntStartAnyBlock AS (select nickname as peer
+                                                 from peers
+                                                 except
+                                                 (select peer
+                                                  from startedBlock1
+                                                  union
+                                                  select peer
+                                                  from startedBlock2)),
+                          countPeers as (select count(nickname) from peers)
+select (select count(peer) * 100 from startedBlock1) / (select * from countPeers),
+       (select count(peer) * 100 from startedBlock2) / (select * from countPeers),
+       (select count(peer) * 100 from startedBothBlocks) / (select * from countPeers),
+       (select count(peer) * 100 from didntStartAnyBlock) / (select * from countPeers);
+end]]></definition>
+         <parameters>
+            <parameter mode="IN" name="block1" type="character varying"/>
+            <parameter mode="IN" name="block2" type="character varying"/>
+            <parameter mode="TABLE" name="startedblock1" type="bigint"/>
+            <parameter mode="TABLE" name="startedblock2" type="bigint"/>
+            <parameter mode="TABLE" name="startedbothblocks" type="bigint"/>
+            <parameter mode="TABLE" name="didntstartanyblock" type="bigint"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getsuccessedtasks()" returnType="TABLE(peer character varying, task character varying, xp integer)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query select checks.peer AS peer,
+                            checks.task AS task,
+                            xp.xpamount AS xp
+                     from xp
+                              join checks on xp.check_id = checks.id;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="task" type="character varying"/>
+            <parameter mode="TABLE" name="xp" type="integer"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getsuccessfulunsuccessfulchecksbirthday()" returnType="TABLE(successfulchecks bigint, unsuccessfulchecks bigint)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query with getFormattedPeers as (select peers.nickname,
+                                                       substr(birthday::text, 6) as part
+                                                from peers),
+                          getStatusChecks AS (select checks.peer,
+                                                     date,
+                                                     p2p.state    as pState,
+                                                     verter.state as vState
+                                              from checks
+                                                       join p2p on checks.id = p2p.check_id
+                                                       left join verter on checks.id = verter.check_id
+                                              where p2p.state in ('Success', 'Failure')
+                                                and (verter.state in ('Success', 'Failure') or verter.state is null)),
+                          getAbobas as (select distinct *
+                                        from getStatusChecks
+                                                 join getFormattedPeers on date::text like '%' || part
+                                        where getStatusChecks.peer = getFormattedPeers.nickname),
+                          countSuccess as (select count(*) as successful
+                                           from getAbobas
+                                           where pState = 'Success'
+                                             and (vState = 'Success' or vState is null)),
+                          countUnsuccess as (select count(*) as unSuccessful
+                                             from getAbobas
+                                             where pState = 'Failure'
+                                               and (vState = 'Failure' or vState is null)),
+                          countPeers as (select count(nickname) from peers)
+select (select successful * 100 from countSuccess) /
+       (select * from countPeers),
+       (select unSuccessful * 100 from countUnsuccess) /
+       (select * from countPeers);
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="successfulchecks" type="bigint"/>
+            <parameter mode="TABLE" name="unsuccessfulchecks" type="bigint"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="getthebestpeer()" returnType="TABLE(peer character varying, xp bigint)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query select c.peer, sum(xpamount) xp
+                     from xp
+                              join checks c on c.id = xp.check_id
+                     group by c.peer
+                     order by xp desc
+                     limit 1;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer" type="character varying"/>
+            <parameter mode="TABLE" name="xp" type="bigint"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="gettransferredpoints()" returnType="TABLE(peer1 character varying, peer2 character varying, pointsamount integer)" securityType="INVOKER" type="FUNCTION">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+return query select t1.checkingpeer,
+                            t1.checkedpeer,
+                            (t1.pointsamount -
+                             t2.pointsamount) as poinstAmount
+                     from transferredpoints t1
+                              join transferredpoints t2 on t1.checkingpeer = t2.checkedpeer and
+                                                           t1.checkedpeer = t2.checkingpeer and t1.id < t2.id;
+end]]></definition>
+         <parameters>
+            <parameter mode="TABLE" name="peer1" type="character varying"/>
+            <parameter mode="TABLE" name="peer2" type="character varying"/>
+            <parameter mode="TABLE" name="pointsamount" type="integer"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="import_data(IN table_name character varying, IN file_path character varying, IN delimiter character)" securityType="INVOKER" type="PROCEDURE">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[DECLARE
+    file_path_regex text := E'^\/[a-zA-Z0-9_-]+.+\.csv$';
+BEGIN
+    IF
+            file_path !~ file_path_regex
+    THEN
+        RAISE EXCEPTION 'Invalid data file_path (% doesn''t match %)', file_path, file_path_regex;
+    END IF;
+    EXECUTE '
+				COPY
+					' || quote_ident(table_name) || '
+				FROM
+					' || quote_literal(file_path) || '
+                WITH (
+					DELIMITER ' || quote_literal(delimiter) || '
+				,FORMAT CSV, HEADER);
+			';
+END;]]></definition>
+         <parameters>
+            <parameter mode="IN" name="table_name" type="character varying"/>
+            <parameter mode="IN" name="file_path" type="character varying"/>
+            <parameter mode="IN" name="delimiter" type="character"/>
+         </parameters>
+      </routine>
+      <routine dataAccess="MODIFIES" deterministic="false" name="parents_count()" securityType="INVOKER" type="PROCEDURE">
+         <comment/>
+         <definition language="plpgsql"><![CDATA[begin
+        create temporary table task_hierarchy_table (task varchar, prevcount integer);
+with recursive task_hierarchy as (
+    select title, parenttask, 0 as prevcount
+    from tasks
+    where parenttask is null
+    union all
+    select t.title, t.parenttask, th.prevcount + 1
+    from tasks t
+             join task_hierarchy th on t.parenttask = th.title
+)
+insert into task_hierarchy_table select title as task, prevcount
+                                 from task_hierarchy;
+end;]]></definition>
+         <parameters>
+            <parameter mode="IN"/>
+         </parameters>
+      </routine>
+   </routines>
+</database>
