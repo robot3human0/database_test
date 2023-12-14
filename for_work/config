@@ -1,0 +1,8 @@
+schemaspy.t=pgsql11
+schemaspy.dp=/home/sidharta/Downloads/jdbc-driver.jar
+schemaspy.host=localhost
+schemaspy.port=5432
+schemaspy.db=test
+schemaspy.u=sidharta
+schemaspy.p=******
+schemaspy.o=/home/sidharta/projects/schemaspy/
